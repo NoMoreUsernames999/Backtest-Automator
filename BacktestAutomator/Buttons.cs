@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 
 namespace BacktestAutomator;
@@ -12,13 +11,14 @@ public class Buttons
     private List<string> _suffix = new();
     private int _suffixIndex = 0;
     private int _localIndex = 0;
+    private static string _directory = Directory.GetCurrentDirectory();
     
     //Function for finding values in a file based on filters
     public void searchLoop()
     {
         int safeguard = _timestamp.Count;
         
-        foreach (var line in File.ReadLines(@"C:\Users\Tempest\Desktop\output.txt")) 
+        foreach (var line in File.ReadLines($"{_directory}\\output.txt")) 
         {
             //Iterate over all the timestamps in the List<T>
             foreach (var timestamp in _timestamp)
@@ -28,15 +28,15 @@ public class Buttons
                     //Isolate a string that only includes the output values in the text file
                     int slice1 = line.IndexOf(": ") + 2;
                     var str = line.Substring(slice1);
-                    File.AppendAllText(@"C:\Users\Tempest\Desktop\generated.csv", $"{str},");   //Adjust to use stream reader?
-                    
+                    File.AppendAllText($"{_directory}\\generated.csv", $"{str},");   //Adjust to use stream reader?
+            
                     Console.WriteLine(str);
                     _localIndex++;
 
                     //Every 4 loops (after the 4 output values have been extracted), suffix the traits of that value set and increment the index
                     if (_localIndex <= 3) continue;
-                    File.AppendAllText(@"C:\Users\Tempest\Desktop\generated.csv", _suffix[_suffixIndex] + "\n");
-                        
+                    File.AppendAllText($"{_directory}\\generated.csv", _suffix[_suffixIndex] + "\n");
+                
                     _localIndex = 0;
                     if (_suffixIndex < safeguard)
                     {
@@ -57,11 +57,6 @@ public class Buttons
         //Ensure there are no duplicate entries
         if (!_timestamp.Contains(timestamp))
         {
-            /*for (int i = 0; i < 4; i++)
-            {
-                _timestamp.Add(timestamp);
-            }*/
-            
             _timestamp.Add(timestamp);
             _suffix.Add($"{type},{winloss},{direction},{notes},");
             
