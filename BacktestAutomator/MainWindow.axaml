@@ -35,8 +35,8 @@
                         <TextBox Grid.Row="5" Grid.Column="1" Margin="10" Name="Notes"/>
                         
                 </Grid>
-                <Button HorizontalAlignment="Center" Name="Next" Margin="20" Click="testNext">Next</Button>
+                <Button HorizontalAlignment="Center" Name="Next" Margin="20" Click="testNext">Save</Button>
                 <Button HorizontalAlignment="Center" Name="Calc" Margin="10" Click="testCalc">Calculate</Button>
-                <TextBlock HorizontalAlignment="Center" x:Name="DebugText" Foreground="Red" Margin="10" Text=""/>
+                <TextBlock HorizontalAlignment="Center" x:Name="DebugText" Foreground="Green" Margin="10" Text=""/>
         </StackPanel>
 </Window>
