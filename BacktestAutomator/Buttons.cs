@@ -26,7 +26,7 @@ public class Buttons
                 if (line.Contains(timestamp))
                 {
                     //Isolate a string that only includes the output values in the text file
-                    int slice1 = line.IndexOf(": ") + 2;
+                    int slice1 = line.IndexOf('#') + 1;
                     var str = line.Substring(slice1);
                     File.AppendAllText($"{_directory}\\generated.csv", $"{str},");   //Adjust to use stream reader?
             
