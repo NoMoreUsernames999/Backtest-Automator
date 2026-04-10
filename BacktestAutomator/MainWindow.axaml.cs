@@ -27,7 +27,7 @@ public partial class MainWindow : Window
             {
                 _click.searchLoop();
                 DebugText.Foreground = Brushes.Green;
-                DebugText.Text = "Output generated. You may close the program.";
+                DebugText.Text = $"Output generated to {_directory}.";
             }
             else
             {
