@@ -11,7 +11,9 @@ public class Buttons
     private List<string> _suffix = new();
     private int _suffixIndex = 0;
     private int _localIndex = 0;
+    private int slice1 = 0;
     private static string _directory = Directory.GetCurrentDirectory();
+    private string stringOutput;
     
     //Function for finding values in a file based on filters
     public void searchLoop()
@@ -26,11 +28,11 @@ public class Buttons
                 if (line.Contains(timestamp))
                 {
                     //Isolate a string that only includes the output values in the text file
-                    int slice1 = line.IndexOf('#') + 1;
-                    var str = line.Substring(slice1);
-                    File.AppendAllText($"{_directory}\\generated.csv", $"{str},");   //Adjust to use stream reader?
+                    slice1 = line.IndexOf('#') + 1;
+                    stringOutput = line.Substring(slice1);
+                    File.AppendAllText($"{_directory}\\generated.csv", $"{stringOutput},");   //Adjust to use stream reader?
             
-                    Console.WriteLine(str);
+                    Console.WriteLine(stringOutput);
                     _localIndex++;
 
                     //Every 4 loops (after the 4 output values have been extracted), suffix the traits of that value set and increment the index
@@ -47,6 +49,16 @@ public class Buttons
                 }
             }
         }
+        
+        //Clean up values to prevent crashing when doing multiple calculations per session
+        _suffixIndex = 0;
+        _localIndex = 0;
+        _suffix.Clear();
+        _suffix.TrimExcess();
+        _timestamp.Clear();
+        _timestamp.TrimExcess();
+        
+        Console.WriteLine($"All values reset!");
     }
     
     //Function for saving all the trade stats for the timestamps to test
