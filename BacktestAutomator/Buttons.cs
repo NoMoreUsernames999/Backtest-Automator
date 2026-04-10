@@ -11,19 +11,22 @@ public class Buttons
     private List<string> _suffix = new();
     private int _suffixIndex = 0;
     private int _localIndex = 0;
+    private int _safeguard = 0;
     private static string _directory = Directory.GetCurrentDirectory();
+    private string _timestampMerge;
+
     
     //Function for finding values in a file based on filters
     public void searchLoop()
     {
-        int safeguard = _timestamp.Count;
+        _safeguard = _timestamp.Count;
         
         foreach (var line in File.ReadLines($"{_directory}\\output.txt")) 
         {
             //Iterate over all the timestamps in the List<T>
-            foreach (var timestamp in _timestamp)
+            foreach (var localTimestampStore in _timestamp)
             {
-                if (line.Contains(timestamp))
+                if (line.Contains(localTimestampStore))
                 {
                     //Isolate a string that only includes the output values in the text file
                     int slice1 = line.IndexOf('#') + 1;
@@ -38,7 +41,7 @@ public class Buttons
                     File.AppendAllText($"{_directory}\\generated.csv", _suffix[_suffixIndex] + "\n");
                 
                     _localIndex = 0;
-                    if (_suffixIndex < safeguard)
+                    if (_suffixIndex < _safeguard)
                     {
                         _suffixIndex++;
                     }
@@ -52,20 +55,12 @@ public class Buttons
     //Function for saving all the trade stats for the timestamps to test
     public void saveEntries(string date, string time, string type, string winloss, string direction, string notes)
     {
-        string timestamp = $"{date} {time}";
+        _timestampMerge = $"{date} {time}";
         
-        //Ensure there are no duplicate entries
-        if (!_timestamp.Contains(timestamp))
-        {
-            _timestamp.Add(timestamp);
-            _suffix.Add($"{type},{winloss},{direction},{notes},");
+        _timestamp.Add(_timestampMerge);
+        _suffix.Add($"{type},{winloss},{direction},{notes},");
             
-            Console.WriteLine($"{timestamp} added!");
-            Console.WriteLine($"Added suffix: {type},{winloss},{direction},{notes},");
-        }
-        else
-        {
-            Console.WriteLine($"List already contains {timestamp}!");
-        }
+        Console.WriteLine($"{_timestampMerge} added!");
+        Console.WriteLine($"Added suffix: {type},{winloss},{direction},{notes},");
     }
 }
